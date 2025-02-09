@@ -31,4 +31,8 @@
 *.out
 *.app
 
+# vulkan compiled shaders
+*.spv
+
 # directories
+bin
