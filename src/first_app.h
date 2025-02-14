@@ -2,6 +2,7 @@
 
 #include "sevk_window.h"
 #include "sevk_pipeline.h"
+#include "sevk_device.h"
 
 namespace sevk
 {
@@ -14,6 +15,12 @@ namespace sevk
     
     private:
         SevkWindow sevkWindow{WIDTH, HEIGHT, "hello vulkan!!!!!"};
-        SevkPipeline sevkPipeline{"bin/shaders/simple_shader.vert.spv", "bin/shaders/simple_shader.frag.spv"};
+        SevkDevice sevkDevice{sevkWindow};
+        SevkPipeline sevkPipeline{
+            sevkDevice,
+            "bin/shaders/simple_shader.vert.spv", 
+            "bin/shaders/simple_shader.frag.spv",
+            SevkPipeline::defaultPipelineconfigInfo(WIDTH, HEIGHT)
+        };
     };
 }

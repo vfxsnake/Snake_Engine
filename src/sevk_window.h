@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vulkan/vulkan.h>
 
 namespace sevk
 {
@@ -15,6 +16,7 @@ namespace sevk
         SevkWindow &operator =(const SevkWindow &)= delete;
 
         bool ShouldClose();
+        void CreateWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
     private:
         void initWindow();

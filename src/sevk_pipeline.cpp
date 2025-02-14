@@ -7,12 +7,23 @@
 
 namespace sevk
 {
-    SevkPipeline::SevkPipeline(const std::string vertex_file_path, const std::string fragment_file_path)
+    SevkPipeline::SevkPipeline(
+        SevkDevice &device,
+        const std::string vertex_file_path, 
+        const std::string fragment_file_path, 
+        const PipelineConfigInfo& configInfo
+    ) : sevkDevice(device)
     {
-        createGraphicsPipeline(vertex_file_path, fragment_file_path);
+        createGraphicsPipeline(vertex_file_path, fragment_file_path, configInfo);
     }
 
-    void SevkPipeline::createGraphicsPipeline(const std::string vertex_file_path, const std::string fragment_file_path)
+    SevkPipeline::~SevkPipeline() {}
+
+    void SevkPipeline::createGraphicsPipeline(
+        const std::string vertex_file_path, 
+        const std::string fragment_file_path, 
+        const PipelineConfigInfo& configInfo
+    )
     {
         auto vertex_code = readFile(vertex_file_path);
         auto fragment_code = readFile(fragment_file_path);
@@ -45,5 +56,24 @@ namespace sevk
         file.close();
 
         return buffer;
+    }
+
+    void SevkPipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule)
+    {
+        VkShaderModuleCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+        createInfo.codeSize = code.size();
+        createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+
+        if (vkCreateShaderModule(sevkDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS)
+        {
+            throw std::runtime_error("failed to create shader module");
+        }
+    }
+
+    PipelineConfigInfo SevkPipeline::defaultPipelineconfigInfo(uint32_t width, uint32_t height)
+    {
+        PipelineConfigInfo configInfo{};
+        return configInfo;
     }
 }

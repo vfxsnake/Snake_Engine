@@ -1,5 +1,6 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <stdexcept>
 
 #include "sevk_window.h"
 
@@ -27,6 +28,14 @@ namespace sevk
     bool SevkWindow::ShouldClose()
     {
         return glfwWindowShouldClose(_windowPtr);
+    }
+
+    void SevkWindow::CreateWindowSurface(VkInstance instance, VkSurfaceKHR *surface)
+    {
+        if (glfwCreateWindowSurface(instance, _windowPtr, nullptr, surface) != VK_SUCCESS)
+        {
+            throw std::runtime_error("failed to create window surface");
+        }
     }
 }
 
