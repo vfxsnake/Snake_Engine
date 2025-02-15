@@ -538,4 +538,4 @@ void SevkDevice::createImageWithInfo(
   }
 }
 
-}  // namespace lve
+}
